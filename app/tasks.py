@@ -9,11 +9,10 @@ from datetime import datetime
 import uuid
 
 
-
-
 #celery.conf.broker_url = os.environ.get('CELERY_BROKER_URI')
 #celery.conf.result_backend = os.environ.get('CELERY_BACKEND_URI')
-celery.conf.task_time_limit=60
+celery.conf.task_time_limit = 60
+
 
 @celery.task
 def add(x, y):
@@ -32,7 +31,8 @@ def run(req_id):
     f_name = str(uuid.uuid4().hex)
     f_ext = lang
 
-    source = f'{f_name}.{f_ext}'
+    source = f'tmp/{f_name}.{f_ext}'
+    source_exec = f'tmp/{f_name}'
 
     with open(source, mode='w', encoding='utf-8') as f:
         f.write(src)
@@ -48,13 +48,19 @@ def run(req_id):
     if lang == 'cpp':
         result = cpp_runner(source)
 
+    if os.path.exists(source):
+        os.remove(source)
+
+    if os.path.exists(source_exec):
+        os.remove(source_exec)
+
     returncode = result.returncode
     stdout = result.stdout
     stderr = result.stderr
-    
-    print(returncode)
-    print(stdout)
-    print(stderr)
+
+    # print(returncode)
+    # print(stdout)
+    # print(stderr)
 
     # update req with results
     req.is_completed = True

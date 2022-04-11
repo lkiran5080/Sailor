@@ -1,23 +1,142 @@
-{% extends 'layout.html'%}
-{% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <div class="card form-card">
-                <div class="card-body">
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <a class="btn btn-block btn-success" href="{{url_for('users.login')}}">Log In</a>
-                        </li>
+{% extends 'layout.html'%} {% block content %}
 
-                        <li class="list-group-item">
-                            <a class="btn btn-block btn-outline-success" href="{{url_for('users.register')}}">Sign
-                                Up</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<style>
+  .banner {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    background-color: #fe5167;
+  }
+
+  .banner-text-container {
+    height: 600px;
+  }
+
+  .banner-img-container {
+    height: 600px;
+  }
+</style>
+
+<div class="container banner">
+  <div class="row">
+    <div class="col">
+      <div class="container banner-text-container">
+        <div class="container" style="height: 100px"></div>
+        <div class="container banner-text">
+          <p class="display-3 font-weight-bold" style="font-weight: 900">
+            Sailor
+          </p>
+          <p class="display-6">
+            Secure <br />
+            Online <br />
+            Compiler <br />
+          </p>
+          <a
+            href="{{url_for('users.login')}}"
+            class="btn btn-dark m-1"
+            style="width: 100%"
+            >Login</a
+          >
+          <a
+            href="{{url_for('users.register')}}"
+            class="btn btn-outline-light m-1"
+            style="width: 100%"
+            >Register</a
+          >
         </div>
+      </div>
     </div>
+    <div class="col-8">
+      <div class="container banner-img-container d-flex">
+        <img
+          src="{{url_for('static', filename='images/processor.png')}}"
+          alt=""
+          class="img-fluid my-auto"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" style="height: 200px"></div>
+
+<div class="container my-2">
+  <div class="row">
+    <div class="col">
+      <div
+        class="container mx-auto"
+        style="background-color: #fe5167; height: 500px; width: 400px"
+      ></div>
+    </div>
+    <div class="col">
+      <img
+        src="{{url_for('static',filename='images/Saly-38.png')}}"
+        class="img-fluid"
+        alt=""
+      />
+    </div>
+  </div>
+</div>
+
+<div class="container m-2">
+  <div class="row">
+    <div class="col">
+      <img
+        src="{{url_for('static',filename='images/Saly-39.png')}}"
+        class="img-fluid"
+        alt=""
+        style="height: 500px"
+      />
+    </div>
+    <div class="col">
+      <div
+        class="container mx-auto"
+        style="background-color: #fe5167; height: 500px; width: 400px"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-4">
+  <div class="row">
+    <div class="col">
+      <div
+        class="container mx-auto"
+        style="background-color: #fe5167; height: 500px; width: 400px"
+      ></div>
+    </div>
+    <div class="col">
+      <img
+        src="{{url_for('static',filename='images/Saly-40.png')}}"
+        class="img-fluid"
+        alt=""
+        style="height: 500px"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" style="height: 200px"></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="container" style="height: 100px"></div>
+      <div class="container mx-auto" style="width: 300px">
+        <p class="display-1" style="font-weight: 900">
+          you're <br />
+          in <br />
+          control
+        </p>
+      </div>
+    </div>
+
+    <div class="col">
+      <img
+        src="{{url_for('static',filename='images/Saly-8.png')}}"
+        class="img-fluid"
+        alt=""
+      />
+    </div>
+  </div>
 </div>
 {% endblock %}

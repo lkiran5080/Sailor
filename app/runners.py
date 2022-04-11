@@ -1,18 +1,33 @@
 import os
 import subprocess
+import resource
+
+
+def setlimits():
+    # after fork() but before exec()
+    print(f"Setting resource limit in child (pid {os.getpid()})")
+    # Set maximum CPU time to 1 second in child process
+    resource.setrlimit(resource.RLIMIT_CPU, (1, 1))
+
+
+def run_command(command):
+
+    return subprocess.run(
+        command, shell=True, capture_output=True, text=True, encoding='utf-8', preexec_fn=setlimits)
 
 
 def py_runner(source):
 
     command = f'python3 {source}'
-    results = subprocess.run(command, shell=True, capture_output=True, text=True, encoding='utf-8')
+    results = subprocess.run(
+        command, shell=True, capture_output=True, text=True, encoding='utf-8')
 
     return results
 
 
 def c_runner(source):
     # compile code in a subprocess, get result
-    
+
     source_fn, source_ext = os.path.splitext(source)
     compilation_command = f'gcc -o {source_fn} {source}'
     compilation_results = subprocess.run(

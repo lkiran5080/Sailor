@@ -1,295 +1,361 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "layout.html" %} {% block content %}
 
 <style>
-    body {
-        background-color: #fff2dd;
-        background-color: #2f2f35;
+  .code-editor {
+    font-family: "Courier New", Courier, monospace;
+    font-size: large;
+    width: 100%;
+    height: 600px;
+    border-radius: 5px;
+    scrollbar-width: thin;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+      0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+      0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+      0 100px 80px rgba(0, 0, 0, 0.12);
+  }
 
-    }
+  .code-editor::-webkit-scrollbar {
+    width: 0;
+  }
 
-    .ace_content::-webkit-scrollbar {
-        width: 1px;
+  .banner-container {
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 500px;
+    height: 600px;
+  }
 
-        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  .stdout-container {
+    background-color: #fff2dd;
+    background-color: #2f2f35;
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 700;
+    height: 500px;
+    width: 400px;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+      0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+      0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+      0 100px 80px rgba(0, 0, 0, 0.12);
+  }
 
-    }
+  .stderr-container {
+    background-color: #fff2dd;
+    background-color: #2f2f35;
+    color: crimson;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 700;
+    height: 500px;
+    width: 400px;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+      0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+      0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+      0 100px 80px rgba(0, 0, 0, 0.12);
+  }
 
-    .ace_content::-webkit-scrollbar-thumb {
-        background-color: darkgrey;
-        outline: 1px solid slategrey;
-    }
-
-    .ace_scrollbar::-webkit-scrollbar {
-        width: 1px;
-    }
-
-    .code-editor {
-        font-family: 'Courier New', Courier, monospace;
-        font-size: large;
-        width: 100%;
-        height: 600px;
-        border-radius: 5px;
-        scrollbar-width: thin;
-        box-shadow:
-            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-            0 12.5px 10px rgba(0, 0, 0, 0.06),
-            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-            0 100px 80px rgba(0, 0, 0, 0.12)
-    }
-
-    .code-editor::-webkit-scrollbar {
-        width: 0;
-    }
-
-    .banner-container {
-        background-image: url('./compass.jpg');
-        background-repeat: no-repeat;
-        background-size: contain;
-        width: 500px;
-        height: 600px;
-    }
-
-    #results {}
-
-    .stdout-container {
-        background-color: #fff2dd;
-        background-color: #2f2f35;
-        color: white;
-        font-family: 'Courier New', Courier, monospace;
-        font-weight: 700;
-        height: 500px;
-        width: 400px;
-        box-shadow:
-            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-            0 12.5px 10px rgba(0, 0, 0, 0.06),
-            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-            0 100px 80px rgba(0, 0, 0, 0.12)
-    }
-
-    .stderr-container {
-        background-color: #fff2dd;
-        background-color: #2f2f35;
-        color: crimson;
-        font-family: 'Courier New', Courier, monospace;
-        font-weight: 700;
-        height: 500px;
-        width: 400px;
-        box-shadow:
-            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-            0 12.5px 10px rgba(0, 0, 0, 0.06),
-            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-            0 100px 80px rgba(0, 0, 0, 0.12)
-    }
-
-    .output-para {
-        word-break: break-all;
-        overflow: auto;
-    }
+  .output-para {
+    word-break: break-all;
+    overflow: auto;
+  }
 </style>
 
-<!-- <input type="text" id="langBox">
-<br>
-<textarea name="" id="codeBox" cols="30" rows="10"></textarea>
-<br>
-<button id="submitBtn">Submit</button>
+<style>
+  .code-editor {
+    font-family: "Courier New", Courier, monospace;
+    font-size: large;
+    width: 500px;
+    height: 600px;
+    border-radius: 5px;
+    scrollbar-width: thin;
+  }
 
-<div id="results">
+  .code-editor::-webkit-scrollbar {
+    width: 0;
+  }
 
-</div> -->
+  .banner-container {
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 500px;
+    height: 600px;
+  }
 
+  .stdout-container {
+    font-family: "Courier New", Courier, monospace;
+    height: 500px;
+    width: 400px;
+    background-color: #2f2f35;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+      0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+      0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+      0 100px 80px rgba(0, 0, 0, 0.12);
+  }
 
-<div class="container" style="height: 100px;">
+  .stderr-container {
+    font-family: "Courier New", Courier, monospace;
+    height: 500px;
+    width: 400px;
+    background-color: #2f2f35;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+      0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+      0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+      0 100px 80px rgba(0, 0, 0, 0.12);
+  }
+</style>
 
+<style>
+  .typewriter {
+    display: inline-block;
+  }
+  .typewriter h1 {
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    letter-spacing: 0.15em; /* Adjust as needed */
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+
+  /* The typing effect */
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from,
+    to {
+      border-color: transparent;
+    }
+    50% {
+      border-color: orange;
+    }
+  }
+</style>
+
+<div class="container" style="height: 100px"></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="container text-center typewriter">
+        <h1 class="display-1">Sailor...|</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="btn-container my-2">
+        <fieldset class="d-flex flex-row">
+          <button
+            id="runBtn"
+            class="btn btn-outline-light"
+            type="button"
+            style="
+              margin: 0px;
+              width: 100px;
+              margin-left: 0px;
+              margin-right: 16px;
+            "
+          >
+            <i class="fa fa-caret-right"></i>
+            <!-- <i class="fa fa-circle-o-notch fa-spin"></i> -->
+            Run
+          </button>
+          <select
+            id="langSelect"
+            class="form-select ms-auto"
+            style="margin-right: 0px; width: 200px"
+            name="Select Language"
+          >
+            <option selected value="cpp">C++</option>
+            <option value="c">C</option>
+            <option value="py">Python</option>
+            <option value="js">JavaScript</option>
+          </select>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div
+        class="container"
+        id="codeEditor"
+        style="height: 600px; font-size: 18px"
+      ></div>
+    </div>
+  </div>
 </div>
 <div class="container">
-    <div class="row">
-        <div class="col-sm">
-            <div class="container">
-
-                <select id="langSelect" class="form-select" aria-label=".form-select-sm example" style="width: 110px;">
-                    <option selected value="cpp">C++</option>
-                    <option value="c">C</option>
-                    <option value="py">Python3</option>
-                    <option value="js">Javascript</option>
-                </select>
-
-                <button class="btn btn-light my-2" id="runBtn">Run</button>
-
-
-
-            </div>
-
-
-            <div class="code-editor m-auto" id="codeEditor">
-
-            </div>
+  <div class="container" style="height: 200px"></div>
+  <div class="row" id="results">
+    <div class="col">
+      <div class="container" style="height: 100px"></div>
+      <div class="card stdout-container mx-auto">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path
+            fill="#00C897"
+            fill-opacity="1"
+            d="M0,288L48,277.3C96,267,192,245,288,218.7C384,192,480,160,576,170.7C672,181,768,235,864,224C960,213,1056,139,1152,144C1248,149,1344,235,1392,277.3L1440,320L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
+          ></path>
+        </svg>
+        <div class="card-body">
+          <p>stdout></p>
+          <p id="stdout"></p>
         </div>
-
+      </div>
     </div>
-    <div class="row" id="waiting">
-        <div class="container-fluid">
-            <div class="container img-container mx-auto d-flex justify-content-center">
-                <img src="{{url_for('static', filename='Saly-38.png')}}" class="mx-auto" alt="" style="height: 600px;">
-            </div>
+    <div class="col">
+      <div class="card stderr-container mx-auto">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path
+            fill="#DC143C"
+            fill-opacity="1"
+            d="M0,288L48,277.3C96,267,192,245,288,218.7C384,192,480,160,576,170.7C672,181,768,235,864,224C960,213,1056,139,1152,144C1248,149,1344,235,1392,277.3L1440,320L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
+          ></path>
+        </svg>
+        <div class="card-body">
+          <p>stderr></p>
+          <p id="stderr"></p>
         </div>
+        <div class="container" style="height: 100px"></div>
+      </div>
     </div>
-    <div id="results" class="row">
-        <div class="col">
-            <div class="container" style="height: 100px;">
-
-            </div>
-            <div class="container stdout-container">
-
-                <p style="color: green;">
-                    stdout>
-                </p>
-                <p id="stdout" class="output-para">
-                </p>
-            </div>
-        </div>
-        <div class="col">
-            <div class="container stderr-container">
-                <p style="color: crimson;">
-                    stderr>
-                </p>
-                <p id="stderr" class="output-para">
-                </p>
-            </div>
-            <div class=" container" style="height: 100px;">
-
-            </div>
-        </div>
-    </div>
-
-</div>
-<div class="container" style="height: 100px;">
-
+  </div>
 </div>
 
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <img
+        src="{{url_for('static', filename='images/Saly-10.png')}}"
+        alt=""
+        class="img-fluid"
+      />
+    </div>
+  </div>
+</div>
 
-<script src="{{url_for('static', filename='vendor/ace-builds/src-noconflict/ace.js')}}" type="text/javascript"
-    charset="utf-8"></script>
+<script
+  src="{{url_for('static', filename='vendor/ace-builds/src-noconflict/ace.js')}}"
+  type="text/javascript"
+  charset="utf-8"
+></script>
 <script>
-    $(document).ready(function () {
+  $(document).ready(function () {
+    var editor = ace.edit("codeEditor");
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/c_cpp");
+    editor.setValue("", -1);
 
-        var editor = ace.edit("codeEditor");
-        editor.setTheme("ace/theme/twilight");
-        editor.session.setMode("ace/mode/c_cpp");
-        editor.setValue('', -1);
+    let langSelector = $("#langSelect");
 
-        let langSelector = $('#langSelect');
+    let langSelect = $("#langSelect :selected");
+    console.log("lang in select : ", langSelect.val());
+    let runBtn = $("#runBtn");
 
-        let langSelect = $('#langSelect :selected');
-        console.log("lang in select : ", langSelect.val());
-        let runBtn = $('#runBtn');
-
-
-        langSelector.on("change", () => {
-            let langSelect = $('#langSelect :selected');
-            console.log("lang in select : ", langSelect.val());
-            switch (langSelect.val()) {
-                case "cpp":
-                    editor.session.setMode("ace/mode/c_cpp");
-                    break;
-                case "c":
-                    editor.session.setMode("ace/mode/c_cpp");
-                    break;
-                case "py":
-                    editor.session.setMode("ace/mode/python");
-                    break;
-                case "py":
-                    editor.session.setMode("ace/mode/javascript");
-                    break;
-            }
-        })
-
-        function handleClick(lang, src) {
-            console.log('Making a POST fetch request...');
-            document.getElementById('waiting').scrollIntoView({
-                behavior: "smooth"
-            });
-            fetch("/run", {
-                    method: "POST",
-                    credentials: 'include',
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        lang: lang,
-                        src: src
-                    }),
-                })
-                .then((response) => response.json())
-                .then((data) => getStatus(data.task_id));
-        }
-
-        function getStatus(taskID) {
-            console.log('ping...Is my job done?')
-            fetch(`/status/${taskID}`, {
-                    method: "GET",
-                    credentials: 'include',
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-                .then((response) => response.json())
-                .then((res) => {
-                    // do something with result
-
-                    document.getElementById('results').scrollIntoView({
-                        behavior: "smooth"
-                    });
-
-                    const taskStatus = res.task_status;
-
-                    if (taskStatus === "SUCCESS") {
-                        const taskResult = res.task_result;
-
-                        console.log('returncode : ', taskResult.returncode);
-                        console.log('stdout : ', taskResult.stdout);
-                        console.log('stderr : ', taskResult.stderr);
-
-                        let stdout = $('#stdout');
-                        let stderr = $('#stderr');
-
-                        stdout.text(taskResult.stdout);
-                        stderr.text(taskResult.stderr);
-
-                    }
-
-                    if (taskStatus === "SUCCESS" || taskStatus === "FAILURE") return false;
-
-                    setTimeout(function () {
-                        getStatus(res.task_id);
-                    }, 1000);
-
-                })
-                .catch((err) => console.log(err));
-        }
-
-        runBtn.on("click", function () {
-            console.log("Run Button was clicked");
-
-            let langSelect = $('#langSelect :selected');
-            let lang = langSelect.val();
-            let src = editor.getValue();
-
-            console.log('lang :', lang);
-            console.log('src :', src)
-
-            handleClick(lang, src);
-
-
-
-        });
+    langSelector.on("change", () => {
+      let langSelect = $("#langSelect :selected");
+      console.log("lang in select : ", langSelect.val());
+      switch (langSelect.val()) {
+        case "cpp":
+          editor.session.setMode("ace/mode/c_cpp");
+          break;
+        case "c":
+          editor.session.setMode("ace/mode/c_cpp");
+          break;
+        case "py":
+          editor.session.setMode("ace/mode/python");
+          break;
+        case "py":
+          editor.session.setMode("ace/mode/javascript");
+          break;
+      }
     });
+
+    function handleClick(lang, src) {
+      console.log("Making a POST fetch request...");
+
+      fetch("/run", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          lang: lang,
+          src: src,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => getStatus(data.task_id));
+    }
+
+    function getStatus(taskID) {
+      console.log("ping...Is my job done?");
+      fetch(`/status/${taskID}`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((res) => {
+          // do something with result
+
+          document.getElementById("results").scrollIntoView({
+            behavior: "smooth",
+          });
+
+          const taskStatus = res.task_status;
+
+          if (taskStatus === "SUCCESS") {
+            const taskResult = res.task_result;
+
+            console.log("returncode : ", taskResult.returncode);
+            console.log("stdout : ", taskResult.stdout);
+            console.log("stderr : ", taskResult.stderr);
+
+            let stdout = $("#stdout");
+            let stderr = $("#stderr");
+
+            stdout.text(taskResult.stdout);
+            stderr.text(taskResult.stderr);
+          }
+
+          if (taskStatus === "SUCCESS" || taskStatus === "FAILURE")
+            return false;
+
+          setTimeout(function () {
+            getStatus(res.task_id);
+          }, 1000);
+        })
+        .catch((err) => console.log(err));
+    }
+
+    runBtn.on("click", function () {
+      console.log("Run Button was clicked");
+
+      let langSelect = $("#langSelect :selected");
+      let lang = langSelect.val();
+      let src = editor.getValue();
+
+      console.log("lang :", lang);
+      console.log("src :", src);
+
+      handleClick(lang, src);
+    });
+  });
 </script>
 <script src=""></script>
 {% endblock content %}
