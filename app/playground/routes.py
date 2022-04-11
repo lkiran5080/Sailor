@@ -12,7 +12,7 @@ playground = Blueprint('playground', __name__)
 
 @playground.route('/playground')
 def get_playground():
-    return render_template('playground.html')
+    return render_template('playground.html', nonav=True)
 
 
 @playground.route('/run', methods=['POST'])
