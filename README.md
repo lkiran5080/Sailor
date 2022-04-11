@@ -36,6 +36,39 @@
 
 - Bcrypt (Secure password hashing algorithm and module)
 
+## Security Model
+
+### Secure Code Execution
+
+**Multiple Layers of Security**
+
+- Running code submitted by users in a remote Docker container
+  - Sandboxing Container
+    - Limiting Pod Resources
+    - Restricting Network I/O
+    - Execution Environment Level restrictions 
+
+> Worst case scenario : 
+>
+> Execution Environment Crashes => Drop the Task => Flag malicious actor/Repeated abuser => Fresh Pod Restarts
+>
+> Rest of the system keeps running
+
+- Task level
+  - Limiting the number of process task can spawn
+  - Limiting no. of files
+  - Limiting file size it can write
+  - Limiting CPU usage
+  - Liming memory address space
+
+### Endpoint Security
+
+- Taking care of OWASP Top 10
+  - Using `CSRF` Tokens
+  - Using `httpOnly` cookies only
+  - Security Headers
+  - etc...
+
 ## Sailor Screenshots
 
 ![](./project/sailor01.png)
@@ -71,6 +104,10 @@ $ docker-compose up -d --scale worker=5
 ```
 
 Now you can go to http://localhost:5000
+
+## Demo
+
+https://drive.google.com/drive/folders/1A6wwHqFHAZsnKSbA7Op2tet0y3nKRAVo?usp=sharing
 
 ## Team
 
