@@ -64,7 +64,7 @@
 
 ## How to run?
 
-The project relies on Docker & Docker Compose!
+:exclamation: The project relies on Docker & Docker Compose!
 
 ```
 $ docker-compose up -d --scale worker=5
@@ -76,10 +76,10 @@ Now you can go to http://localhost:5000
 
 Team Name : Thundering Bits
 
-Lakshay, National Institute of Technology Kurukshetra
-https://github.com/lkiran5080
+Lakshay, National Institute of Technology Kurukshetra  
+https://github.com/lkiran5080  
 lakshay5080@gmail.com
 
-Sahil, National Institute of Technology Kurukshetra
-https://github.com/SahilKumar7
+Sahil, National Institute of Technology Kurukshetra  
+https://github.com/SahilKumar7  
 sahil.kumar5729@gmail.com
